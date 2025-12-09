@@ -157,40 +157,6 @@ def matrix_save(matrix: defaultdict[Counter], save_path: str, n: int = 4) -> Non
         pickle.dump(matrix, f)
 
 
-# test_data = data_load(PATH_)
-# t = take_content(test_data)
-
-
-
-# text = t[-1]
-# komoran = Komoran() 
-# # print("okt 형태소 추출:", komoran.morphs(text)) 
-# print(text)
-# print('='*70)
-# tokens = komoran.morphs(text)
-# # tokens2 = compose_hangle(tokens)
-# tokens3 = compos_hangle_ver2(komoran.pos(text))
-# tokens4 = komoran.pos(text)
-# print('='*70)
-# print(tokens)
-# print('='*70)
-# print(tokens4)
-# print('='*70)
-# print(tokens3)
-
-
-
-# cnt = 0
-# cnt2 = 0
-# for text in t:
-#     k = komoran.pos(text)
-#     cnt += len(compos_hangle_ver2(k))
-#     cnt2 +=len(k)
-
-# print(f'{(cnt2-cnt)/cnt2*100}%')
-
-
-
 NAME = 'IT_과학'
 
 if __name__ == "__main__":
@@ -198,14 +164,4 @@ if __name__ == "__main__":
     dir_path = f'D:/Repositories/too_much_big_data/markov/download/라벨링데이터/{NAME}'
     dir_list = os.listdir(dir_path)
 
-    # ds = data_load(dir_path +'/'+ dir_list[9])
-    # content = take_content(ds)
-    # sentence = content[81]
-    # compos_hangle_ver2(komoran.pos(sentence))
-
-    # cnt = 0
     take_token_on_one_file(dir_path +'/'+ dir_list[9], root_name='data')
-    # for path in tqdm(dir_list):
-    #     cnt += 1
-    #     take_token_on_one_file(dir_path +'/'+ path)
-    #     print(f'{len(dir_list)-cnt} 번 남음') # 3000개에 5시간 예상인데;; 무조건 병렬 해야할듯

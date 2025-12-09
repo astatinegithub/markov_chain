@@ -40,7 +40,7 @@
 
 # ===================================================================
 from main import *
-def merge_files(folder_path:str='data'):
+def merge_files(folder_path:str='data-국제'):
     file_list = os.listdir(folder_path)
 
     data = []
@@ -55,42 +55,7 @@ def merge_files(folder_path:str='data'):
         for key, counter in d.items():
             merge_matrix[key].update(counter)
 
-    # print(merge_matrix)
-    # print(len(merge_matrix))
-
     matrix_save(merge_matrix, f'processsed_data/test_sum_{time.time()}.pkl')
-
-
-# import os
-# dir_path = 'D:/Repositories/too_much_big_data/markov/download/라벨링데이터'
-# dir_list = os.listdir(dir_path)
-# path_list = [{i: len(os.listdir(dir_path+'/'+i))} for i in dir_list]
-
-# for i in path_list:
-#     print(i)
-
-# import threading
-
-# class mythread(threading.Thread):
-#     def __init__(self, id, data_path, lock, name=None):
-#         super().__init__(name=name)
-#         self.id = id
-#         self.lock = lock
-#         self.path = data_path
-
-#     def run(self):
-#         with self.lock:
-#             print(f'thread {self.name} is start')
-
-#             # process zone
-#             take_token_on_one_file(dir_path +'/'+ self.path)
-
-#             print(f'thread {self.name} is ended')
-
-
-# lock = threading.Lock()
-
-# from main import *
 
 import multiprocessing
 

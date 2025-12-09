@@ -1,12 +1,14 @@
 from collections import Counter, defaultdict
+from main import compos_hangle_ver2
 import pickle
 # test = defaultdict({('콘텐츠', '제작사와', '웹사이트'): Counter({'운영': 4, '제작': 3}), ('제작사와', '웹사이트', '운영'): Counter({'사들의': 1, '사': 1}), ('웹사이트', '운영', '사들의'): Counter({'경우': 1}), ('운영', '사들의', '경우'): Counter({',': 1})})
 from time import time
 from tqdm import tqdm
-T = time()
+from konlpy.tag import Komoran
+
+
 with open('processed_data/IT_dataset.pkl', 'rb') as f:
     matrix = pickle.load(f)
-print(time()-T)
 
 # value = []
 # weight = []
@@ -42,12 +44,17 @@ def select_word(pre_words: tuple):
     return rlt[0]
 
     # return m.most_common(1)[0][0]
-print(list(matrix.keys())[0])
 
-sentence = ['정부가', 'lte(롱텀에볼루션)', '서비스']
+komoran = Komoran()
+
+print(list(matrix.keys())[0])
+text = '지난 2013년 애플이'
+sentence = ['', '', '']
+sentence = compos_hangle_ver2(komoran.pos(text))
+print(sentence)
 
 import time
-for i in range(100):
+for i in range(30):
     next = select_word((sentence[-3], sentence[-2], sentence[-1]))
     sentence.append(next)
     print(*sentence)
