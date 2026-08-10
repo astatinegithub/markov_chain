@@ -19,9 +19,9 @@ def load_martrix(file_name: str='processed_data/IT_dataset.pkl') -> defaultdict[
     return matrix
 
 
-def logit(P: float) -> float:
-    """probability to float"""
-    return math.log(P/(1-P))
+# def logit(P: float) -> float:
+#     """probability to float"""
+#     return math.log(P/(1-P))
 
 
 def Temperature_normalization(P_list: list, T: float = 0.35) -> list:
@@ -32,7 +32,7 @@ def Temperature_normalization(P_list: list, T: float = 0.35) -> list:
         elif P ==1:
             temp.append(1)
         else:
-            temp.append(math.e**(logit(P)/T))
+            temp.append(math.e**(P/T))
     temp_all  = sum(temp)
     rlt = []
     for i in temp:

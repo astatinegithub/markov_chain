@@ -1,26 +1,25 @@
 import gradio as gr
-import matrix_test 
+from matrix_test import komoran, compos_hangle_ver2, load_martrix, select_word
 from kiwipiepy import Kiwi
 import time
 
 kiwi = Kiwi()
 
-Matrix = matrix_test.load_martrix('processed_data/IT_dataset.pkl')
-Matrix_n1 = matrix_test.load_martrix('processed_data_n=1/IT_과학_dataset.pkl')
+Matrix = load_martrix('processed_data/IT_dataset.pkl')
+Matrix_n1 = load_martrix('processed_data_n=1/IT_과학_dataset.pkl')
 
-komoran = matrix_test.komoran
-compos_hangle_ver2 = matrix_test.compos_hangle_ver2
+# komoran = matrix_test.komoran
+# compos_hangle_ver2 = matrix_test.compos_hangle_ver2
 
-def generate_sentence(seed_text: str, max_steps: int, T: float, time_step: float) -> str:
+def generate_sentence(seed_text: str, max_steps: int, T: float, time_step: float):
     """
     seed_text: 사용자가 입력한 시작 문장
     max_steps: 생성할 단어(토큰) 개수
     """
     seed_text = seed_text.strip()
-    if not seed_text:
-        return "시작 문장을 입력해 주세요."
+    # if not seed_text:
+    #     return "시작 문장을 입력해 주세요." # 입력이 없으면 함수 호출이 안됨
 
-    # 형태소 분석 + compos_hangle_ver2 적용
     try:
         sentence = compos_hangle_ver2(komoran.pos(seed_text))
     except Exception as e:
@@ -28,12 +27,12 @@ def generate_sentence(seed_text: str, max_steps: int, T: float, time_step: float
 
     for _ in range(max_steps):
         if len(sentence) < 3:
-            next_word = matrix_test.select_word(Matrix_n1, (sentence[-1], ), T) 
+            next_word = select_word(Matrix_n1, (sentence[-1], ), T) 
         else:
             try:
-                next_word = matrix_test.select_word(Matrix, (sentence[-3], sentence[-2], sentence[-1]), T)
+                next_word = select_word(Matrix, (sentence[-3], sentence[-2], sentence[-1]), T)
             except:
-                next_word = matrix_test.select_word(Matrix_n1, (sentence[-1], ), T) 
+                next_word = select_word(Matrix_n1, (sentence[-1], ), T) 
 
         time.sleep(time_step)
 

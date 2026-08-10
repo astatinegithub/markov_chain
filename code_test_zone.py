@@ -40,5 +40,5 @@ import matrix_test
 
 
 print(len(matrix_test.load_martrix('processed_data/IT_dataset.pkl')))
-# print(len(matrix_test.load_martrix('processed_data/IT_과학_dataset.pkl')))
-print(len(matrix_test.load_martrix('processed_data/취미_dataset.pkl')))
+print(matrix_test.load_martrix('processed_data/IT_과학_dataset.pkl'))
+# print(len(matrix_test.load_martrix('processed_data/취미_dataset.pkl')))

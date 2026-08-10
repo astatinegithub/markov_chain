@@ -1,14 +1,11 @@
 from konlpy.tag import Komoran
 import json
-from os.path import abspath
 import os
-import pandas
 from unicode import join_jamos
 from collections import defaultdict, Counter
 import pickle
-import time
 from tqdm import tqdm
-from jamo import h2j, j2h, j2hcj
+from jamo import h2j, j2hcj
 
 komoran = Komoran() 
 
@@ -158,7 +155,7 @@ def n_gram(token: list, n :int = 4): # (n-1)-gram으로 생각해야함, 앞n개
         yield tuple(token[i:n+i])
 
 
-def to_matrix(sentence: list, transitions :defaultdict[Counter] = defaultdict(Counter), n: int = 4) -> Counter:
+def to_matrix(sentence: list, transitions: defaultdict[Counter] = defaultdict(Counter), n: int = 4) -> Counter:
     for ng in n_gram(sentence, n):
         pre = ng[:-1]
         next_token = ng[-1]
@@ -186,6 +183,8 @@ def load_pickle(path: str) -> defaultdict[Counter]:
 def merge_files2(folder_path: str='data') -> None : 
     file_list = os.listdir(folder_path)
 
+    PATH = f'processed_data/{NAME}_dataset.pkl'
+
     data = []
     size = 64
     n = len(file_list)
@@ -198,25 +197,24 @@ def merge_files2(folder_path: str='data') -> None :
             print('!')
             merge_matrix = defaultdict(Counter)
         else:
-            merge_matrix = load_pickle(f'processed_data_n=1/{NAME}_dataset.pkl')
+            merge_matrix = load_pickle(PATH)
         
         chunk_files = [f'{folder_path}/{i}' for i in file_list[start:end]]
-        
-        data = []
     
         with multiprocessing.Pool(processes=8) as pool:
-            data.append(pool.map(load_pickle, chunk_files))
+            data = pool.map(load_pickle, chunk_files)
 
         for d in data:
-            for key, counter in d[0].items():
+            for key, counter in d.items():
                 merge_matrix[key].update(counter) # 전이 확률 업데이트
         
-        matrix_save(merge_matrix, f'processed_data/{NAME}_dataset.pkl')
+        matrix_save(merge_matrix, PATH)
 
 
 def make_datas():
     """
-    한국어 말뭉치 데이터셋에서 원하는 카테고리를 골라서 그 카테고리 파일 전부를 전처리 해서 새로운 폴더에 저장하는 코드
+    한국어 말뭉치 데이터셋에서 원하는 카테고리를 골라서 
+    그 카테고리 파일 전부를 전처리 한 후 새로운 폴더에 저장하는 코드
     저장하는 폴더는 따로 입력이 필요(매개변수x)
     """
     dir_path = f'D:/Repositories/too_much_big_data/markov/download/라벨링데이터/{NAME}'
@@ -235,7 +233,7 @@ if __name__ == "__main__":
     # dir_list = os.listdir(dir_path)
     # take_token_on_one_file(dir_path +'/'+ dir_list[9], root_name='data')
 
-    make_datas()
+    # make_datas()
     merge_files2()
 
 
